@@ -306,6 +306,9 @@
         // Музыка
         const musicBtn = document.getElementById('musicToggle');
         const audio = document.getElementById('bgMusic');
+
+        audio.volume = 0.2;
+        
         musicBtn.onclick = () => {
             if (audio.paused) {
                 audio.play();
