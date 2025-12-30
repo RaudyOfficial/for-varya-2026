@@ -30,6 +30,27 @@
             pointer-events: none; z-index: 10;
         }
 
+        /* КНОПКА МУЗЫКИ */
+        #musicToggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        #musicToggle:active { transform: scale(0.9); }
+
         .section {
             min-height: 100vh;
             display: flex;
@@ -41,7 +62,6 @@
             box-sizing: border-box;
         }
 
-        /* АНИМАЦИЯ ПОЯВЛЕНИЯ */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -53,7 +73,6 @@
             transform: translateY(0);
         }
 
-        /* ГАЛЕРЕЯ */
         .gallery {
             display: flex;
             flex-direction: column;
@@ -70,6 +89,8 @@
             border-radius: 20px;
             width: 90%;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .photo-placeholder {
@@ -92,7 +113,6 @@
             padding: 0 10px;
         }
 
-        /* КУПОНЫ */
         .coupon-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -102,20 +122,19 @@
             margin-top: 20px;
         }
 
-       .coupon {
+        .coupon {
             background: var(--card-bg);
             border: 1px dashed var(--accent-color);
             padding: 20px;
             border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
-
-            /* Центрирование контента */
-            display: flex;            /* Включаем гибкий контейнер */
-            align-items: center;      /* Центрируем по вертикали */
-            justify-content: center;  /* Центрируем по горизонтали */
-            min-height: 80px;         /* Задаем минимальную высоту, чтобы купоны были одинаковыми */
-            text-align: center;       /* На всякий случай для многострочного текста */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+            text-align: center;
+            backdrop-filter: blur(5px);
         }
 
         .coupon:hover {
@@ -138,6 +157,10 @@
 <body>
 
     <canvas id="snow"></canvas>
+
+    <button id="musicToggle">🎵</button>
+    <audio id="bgMusic" src="music.mp3" loop></audio>
+    <audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
     <div class="section">
         <h1 class="reveal active">С Новым Годом!</h1>
@@ -194,6 +217,7 @@
     </div>
 
     <script>
+        // Снег
         const canvas = document.getElementById('snow');
         const ctx = canvas.getContext('2d');
         let width, height, flakes = [];
@@ -228,6 +252,7 @@
             }
         }
 
+        // Появление при скролле
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
@@ -240,6 +265,7 @@
             }
         }
 
+        // Частицы
         function createParticle(x, y, isHeart = false) {
             const particle = document.createElement('div');
             particle.innerHTML = isHeart ? '❤️' : '✨';
@@ -263,18 +289,38 @@
             setTimeout(() => { particle.remove(); }, 2000);
         }
 
+        // Активация купона
         function activateCoupon(text) {
-            alert(text);
-            for(let i = 0; i < 30; i++) {
-                createParticle(window.innerWidth / 2, window.innerHeight / 2);
-            }
+            const clickSound = document.getElementById('clickSound');
+            clickSound.currentTime = 0;
+            clickSound.play().catch(e => console.log("Звук заблокирован"));
+
+            setTimeout(() => {
+                alert(text);
+                for(let i = 0; i < 30; i++) {
+                    createParticle(window.innerWidth / 2, window.innerHeight / 2);
+                }
+            }, 100);
         }
+
+        // Музыка
+        const musicBtn = document.getElementById('musicToggle');
+        const audio = document.getElementById('bgMusic');
+        musicBtn.onclick = () => {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.innerHTML = '⏸️';
+            } else {
+                audio.pause();
+                musicBtn.innerHTML = '🎵';
+            }
+        };
 
         window.onload = () => {
             for(let i = 0; i < 35; i++) {
                 setTimeout(() => createParticle(Math.random() * window.innerWidth, Math.random() * window.innerHeight, true), i * 80);
             }
-            reveal(); // Проверка видимости при загрузке
+            reveal();
         };
 
         window.addEventListener('scroll', reveal);
