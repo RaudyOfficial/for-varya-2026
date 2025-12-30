@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наш Уютный 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a2e22; /* Темно-хвойный */
+            --text-color: #f0ede5; /* Слоновая кость */
+            --accent-color: #d4af37; /* Золотистый */
+            --card-bg: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2 { font-family: 'Pacifico', cursive; color: var(--accent-color); }
+
+        #snow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 10;
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        /* АНИМАЦИЯ ПОЯВЛЕНИЯ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ГАЛЕРЕЯ */
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .photo-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 20px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .photo-placeholder img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .photo-caption {
+            font-style: italic;
+            font-size: 0.95em;
+            margin-top: 15px;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        /* КУПОНЫ */
+        .coupon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+
+       .coupon {
+            background: var(--card-bg);
+            border: 1px dashed var(--accent-color);
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            /* Центрирование контента */
+            display: flex;            /* Включаем гибкий контейнер */
+            align-items: center;      /* Центрируем по вертикали */
+            justify-content: center;  /* Центрируем по горизонтали */
+            min-height: 80px;         /* Задаем минимальную высоту, чтобы купоны были одинаковыми */
+            text-align: center;       /* На всякий случай для многострочного текста */
+        }
+
+        .coupon:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .btn {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="snow"></canvas>
+
+    <div class="section">
+        <h1 class="reveal active">С Новым Годом!</h1>
+        <p class="reveal active">Этот год был особенным благодаря тебе...</p>
+        <a href="#memories" class="btn reveal active">Начать путешествие</a>
+    </div>
+
+    <div id="memories" class="section">
+        <h2 class="reveal">Наши моменты</h2>
+        <div class="gallery">
+            <div class="photo-card reveal">
+                <div class="photo-placeholder"><img src="1.jpg" alt="1"></div>
+                <p class="photo-caption">Здесь мы такие счастливые, помнишь этот день?</p>
+            </div>
+            <div class="photo-card reveal">
+                <div class="photo-placeholder"><img src="2.jpg" alt="2"></div>
+                <p class="photo-caption">Мы такие здесь крутые</p>
+            </div>
+            <div class="photo-card reveal">
+                <div class="photo-placeholder"><img src="3.jpg" alt="3"></div>
+                <p class="photo-caption">Самый уютный вечер этого года</p>
+            </div>
+            <div class="photo-card reveal">
+                <div class="photo-placeholder"><img src="4.jpg" alt="4"></div>
+                <p class="photo-caption">Поженились!</p>
+            </div>
+            <div class="photo-card reveal">
+                <div class="photo-placeholder"><img src="5.jpg" alt="5"></div>
+                <p class="photo-caption">Просто люблю тебя</p>
+            </div>
+            <div class="photo-card reveal">
+                <div class="photo-placeholder"><img src="6.jpg" alt="6"></div>
+                <p class="photo-caption">Немножка секса</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="reveal">Твои подарки</h2>
+        <p class="reveal">Нажми на любой купон, чтобы активировать его</p>
+        <div class="coupon-grid">
+            <div class="coupon reveal" onclick="activateCoupon('Купон на массаж активирован! ❤️')">💆‍♂️ Массаж тела</div>
+            <div class="coupon reveal" onclick="activateCoupon('Готовлю то, что скажешь! 🍳')">👨‍🍳 Фирменное блюдо</div>
+            <div class="coupon reveal" onclick="activateCoupon('Идем в твое любимое место! 🍕')">🍴 Поход покушать</div>
+            <div class="coupon reveal" onclick="activateCoupon('Целую 100 раз, где захочешь! ❤️')">💋 100 поцелуев</div>
+            <div class="coupon reveal" onclick="activateCoupon('Выполню все твои желания!&#41; 💋')">🔥 Сделать приятно</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="reveal">Люблю тебя!</h2>
+        <p class="reveal">Пусть наш 2026-й будет самым счастливым.</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('snow');
+        const ctx = canvas.getContext('2d');
+        let width, height, flakes = [];
+
+        function init() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            flakes = [];
+            for (let i = 0; i < 100; i++) {
+                flakes.push({ x: Math.random() * width, y: Math.random() * height, r: Math.random() * 3 + 1, d: Math.random() * 1 });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = "white";
+            ctx.beginPath();
+            for (let f of flakes) {
+                ctx.moveTo(f.x, f.y);
+                ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2, true);
+            }
+            ctx.fill();
+            move();
+        }
+
+        function move() {
+            for (let f of flakes) {
+                f.y += Math.pow(f.d, 2) + 1;
+                if (f.y > height) { f.y = -10; f.x = Math.random() * width; }
+            }
+        }
+
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        function createParticle(x, y, isHeart = false) {
+            const particle = document.createElement('div');
+            particle.innerHTML = isHeart ? '❤️' : '✨';
+            particle.style.position = 'fixed';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '9999';
+            particle.style.transition = 'all 2s cubic-bezier(0.1, 0.5, 0.5, 1)';
+            document.body.appendChild(particle);
+
+            const destinationX = (Math.random() - 0.5) * 400;
+            const destinationY = (Math.random() - 0.5) * 400;
+
+            setTimeout(() => {
+                particle.style.transform = `translate(${destinationX}px, ${destinationY}px) rotate(${Math.random() * 360}deg)`;
+                particle.style.opacity = '0';
+            }, 10);
+
+            setTimeout(() => { particle.remove(); }, 2000);
+        }
+
+        function activateCoupon(text) {
+            alert(text);
+            for(let i = 0; i < 30; i++) {
+                createParticle(window.innerWidth / 2, window.innerHeight / 2);
+            }
+        }
+
+        window.onload = () => {
+            for(let i = 0; i < 35; i++) {
+                setTimeout(() => createParticle(Math.random() * window.innerWidth, Math.random() * window.innerHeight, true), i * 80);
+            }
+            reveal(); // Проверка видимости при загрузке
+        };
+
+        window.addEventListener('scroll', reveal);
+        window.addEventListener('resize', init);
+        init();
+        setInterval(draw, 30);
+    </script>
+</body>
+</html>
